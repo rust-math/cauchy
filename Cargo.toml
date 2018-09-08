@@ -1,0 +1,9 @@
+[package]
+name = "num-scalar"
+version = "0.1.0"
+authors = ["Toshiki Teramura <toshiki.teramura@gmail.com>"]
+
+[dependencies]
+num-complex = "0.2"
+num-traits = "0.2"
+rand = "0.5"
