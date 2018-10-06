@@ -90,14 +90,26 @@ impl BiAction<f64, c64> for c64 {}
 impl BiAction<c64, c64> for f64 {}
 impl BiAction<c64, c64> for c64 {}
 
-pub trait Scalar<Real, Complex>: Field + BiAction<Real, Self> + BiAction<Complex, Complex>
-where
-    Real: Scalar<Real, Complex> + BiAction<Self, Self>,
-    Complex: Scalar<Real, Complex> + BiAction<Self, Complex>,
-{
+pub trait Scalar: Field {
+    type Real: Scalar<Real = Self::Real, Complex = Self::Complex>
+        + BiAction<Self::Complex, Self::Complex>;
+    type Complex: Scalar<Real = Self::Real, Complex = Self::Complex>
+        + BiAction<Self::Real, Self::Complex>;
 }
 
-impl Scalar<f32, c32> for f32 {}
-impl Scalar<f64, c64> for f64 {}
-impl Scalar<f32, c32> for c32 {}
-impl Scalar<f64, c64> for c64 {}
+impl Scalar for f32 {
+    type Real = f32;
+    type Complex = c32;
+}
+impl Scalar for c32 {
+    type Real = f32;
+    type Complex = c32;
+}
+impl Scalar for f64 {
+    type Real = f64;
+    type Complex = c64;
+}
+impl Scalar for c64 {
+    type Real = f64;
+    type Complex = c64;
+}
