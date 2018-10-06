@@ -24,7 +24,7 @@ extern crate num_traits;
 extern crate rand;
 
 use num_complex::Complex;
-use num_traits::*;
+use num_traits::{Float, FromPrimitive, NumAssign, NumCast, NumOps, ToPrimitive};
 
 pub use num_complex::Complex32 as c32;
 pub use num_complex::Complex64 as c64;
