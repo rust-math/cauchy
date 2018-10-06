@@ -4,6 +4,6 @@ version = "0.1.0"
 authors = ["Toshiki Teramura <toshiki.teramura@gmail.com>"]
 
 [dependencies]
-num-complex = "0.2"
+num-complex = { git = "http://github.com/rust-num/num-complex" }
 num-traits = "0.2"
 rand = "0.5"
