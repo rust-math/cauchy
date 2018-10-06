@@ -49,100 +49,153 @@ pub trait Scalar: NumAssign + FromPrimitive + NumCast + Copy {
     /// Complex conjugate
     fn conj(&self) -> Self;
 
-    /// Square root
-    fn sqrt(&self) -> Self;
     /// Absolute value
     fn abs(&self) -> Self::Real;
     /// Sqaure of absolute value
     fn abs_sqr(&self) -> Self::Real;
 
-    /// Exponential
+    fn sqrt(&self) -> Self;
     fn exp(&self) -> Self;
-    /// Natural Logarithm
     fn ln(&self) -> Self;
+    fn sin(&self) -> Self;
+    fn cos(&self) -> Self;
+    fn tan(&self) -> Self;
+    fn asin(&self) -> Self;
+    fn acos(&self) -> Self;
+    fn atan(&self) -> Self;
+    fn sinh(&self) -> Self;
+    fn cosh(&self) -> Self;
+    fn tanh(&self) -> Self;
+    fn asinh(&self) -> Self;
+    fn acosh(&self) -> Self;
+    fn atanh(&self) -> Self;
+}
+
+macro_rules! impl_float {
+    ($name:ident) => {
+        #[inline]
+        fn $name(&self) -> Self {
+            Float::$name(*self)
+        }
+    }
+}
+
+macro_rules! impl_complex {
+    ($name:ident) => {
+        #[inline]
+        fn $name(&self) -> Self {
+            Complex::$name(self)
+        }
+    };
 }
 
 impl Scalar for f32 {
     type Real = f32;
     type Complex = c32;
 
+    #[inline]
     fn re(&self) -> Self::Real {
         *self
     }
+    #[inline]
     fn im(&self) -> Self::Real {
         0.0
     }
+    #[inline]
     fn real<T: ToPrimitive>(re: T) -> Self::Real {
         NumCast::from(re).unwrap()
     }
+    #[inline]
     fn complex<T: ToPrimitive>(re: T, im: T) -> Self::Complex {
         Complex {
             re: NumCast::from(re).unwrap(),
             im: NumCast::from(im).unwrap(),
         }
     }
+    #[inline]
     fn as_c(&self) -> Self::Complex {
         c32::new(*self, 0.0)
     }
+    #[inline]
     fn conj(&self) -> Self {
         *self
     }
-
-    fn sqrt(&self) -> Self {
-        Float::sqrt(*self)
-    }
-    fn abs(&self) -> Self::Real {
-        Float::abs(*self)
-    }
+    #[inline]
     fn abs_sqr(&self) -> Self::Real {
         self * self
     }
-    fn exp(&self) -> Self {
-        Float::exp(*self)
-    }
-    fn ln(&self) -> Self {
-        Float::ln(*self)
-    }
+
+    impl_float!(sqrt);
+    impl_float!(abs);
+    impl_float!(exp);
+    impl_float!(ln);
+    impl_float!(sin);
+    impl_float!(cos);
+    impl_float!(tan);
+    impl_float!(sinh);
+    impl_float!(cosh);
+    impl_float!(tanh);
+    impl_float!(asin);
+    impl_float!(acos);
+    impl_float!(atan);
+    impl_float!(asinh);
+    impl_float!(acosh);
+    impl_float!(atanh);
 }
 
 impl Scalar for c32 {
     type Real = f32;
     type Complex = c32;
 
+    #[inline]
     fn re(&self) -> Self::Real {
         self.re
     }
+    #[inline]
     fn im(&self) -> Self::Real {
         self.im
     }
+    #[inline]
     fn real<T: ToPrimitive>(re: T) -> Self::Real {
         NumCast::from(re).unwrap()
     }
+    #[inline]
     fn complex<T: ToPrimitive>(re: T, im: T) -> Self::Complex {
         c32 {
             re: NumCast::from(re).unwrap(),
             im: NumCast::from(im).unwrap(),
         }
     }
+    #[inline]
     fn as_c(&self) -> Self::Complex {
         *self
     }
+    #[inline]
     fn conj(&self) -> Self {
-        Complex::conj(&self)
+        Complex::conj(self)
     }
-    fn sqrt(&self) -> Self {
-        Complex::sqrt(self)
-    }
-    fn abs(&self) -> Self::Real {
-        Complex::norm(self)
-    }
+    #[inline]
     fn abs_sqr(&self) -> Self::Real {
         Complex::norm_sqr(self)
     }
-    fn exp(&self) -> Self {
-        Complex::exp(self)
+    #[inline]
+    fn abs(&self) -> Self::Real {
+        Complex::norm(self)
     }
-    fn ln(&self) -> Self {
-        Complex::ln(self)
-    }
+
+    impl_complex!(sqrt);
+    impl_complex!(exp);
+    impl_complex!(ln);
+    impl_complex!(sin);
+    impl_complex!(cos);
+    impl_complex!(tan);
+    impl_complex!(sinh);
+    impl_complex!(cosh);
+    impl_complex!(tanh);
+    impl_complex!(asin);
+    impl_complex!(acos);
+    impl_complex!(atan);
+    impl_complex!(asinh);
+    impl_complex!(acosh);
+    impl_complex!(atanh);
 }
