@@ -15,7 +15,7 @@
 //!     a.re() + A::real(1.0)
 //! }
 //! fn add_complex<A: Scalar>(a: A) -> A::Complex {
-//!     a.as_complex() + A::complex(1.0, 1.0)
+//!     a.as_c() + A::complex(1.0, 1.0)
 //! }
 //! ```
 
@@ -42,7 +42,7 @@ pub trait Scalar: NumAssign + FromPrimitive + NumCast + Copy {
 
     fn re(self) -> Self::Real;
     fn im(self) -> Self::Real;
-    fn as_complex(self) -> Self::Complex;
+    fn as_c(self) -> Self::Complex;
 }
 
 impl Scalar for f32 {
@@ -60,7 +60,7 @@ impl Scalar for f32 {
             im: im.to_f32().unwrap(),
         }
     }
-    fn as_complex(self) -> Self::Complex {
+    fn as_c(self) -> Self::Complex {
         c32::new(self, 0.0)
     }
 }
@@ -79,7 +79,7 @@ impl Scalar for c32 {
             im: im.to_f32().unwrap(),
         }
     }
-    fn as_complex(self) -> Self::Complex {
+    fn as_c(self) -> Self::Complex {
         self
     }
 }
