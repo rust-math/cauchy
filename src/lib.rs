@@ -89,113 +89,120 @@ macro_rules! impl_complex {
     };
 }
 
-impl Scalar for f32 {
-    type Real = f32;
-    type Complex = c32;
+macro_rules! impl_scalar {
+    ($real:ty, $complex:ty) => {
+        impl Scalar for $real {
+            type Real = $real;
+            type Complex = $complex;
 
-    #[inline]
-    fn re(&self) -> Self::Real {
-        *self
-    }
-    #[inline]
-    fn im(&self) -> Self::Real {
-        0.0
-    }
-    #[inline]
-    fn real<T: ToPrimitive>(re: T) -> Self::Real {
-        NumCast::from(re).unwrap()
-    }
-    #[inline]
-    fn complex<T: ToPrimitive>(re: T, im: T) -> Self::Complex {
-        Complex {
-            re: NumCast::from(re).unwrap(),
-            im: NumCast::from(im).unwrap(),
+            #[inline]
+            fn re(&self) -> Self::Real {
+                *self
+            }
+            #[inline]
+            fn im(&self) -> Self::Real {
+                0.0
+            }
+            #[inline]
+            fn real<T: ToPrimitive>(re: T) -> Self::Real {
+                NumCast::from(re).unwrap()
+            }
+            #[inline]
+            fn complex<T: ToPrimitive>(re: T, im: T) -> Self::Complex {
+                Complex {
+                    re: NumCast::from(re).unwrap(),
+                    im: NumCast::from(im).unwrap(),
+                }
+            }
+            #[inline]
+            fn as_c(&self) -> Self::Complex {
+                Complex::new(*self, 0.0)
+            }
+            #[inline]
+            fn conj(&self) -> Self {
+                *self
+            }
+            #[inline]
+            fn abs_sqr(&self) -> Self::Real {
+                self * self
+            }
+
+            impl_float!(sqrt);
+            impl_float!(abs);
+            impl_float!(exp);
+            impl_float!(ln);
+            impl_float!(sin);
+            impl_float!(cos);
+            impl_float!(tan);
+            impl_float!(sinh);
+            impl_float!(cosh);
+            impl_float!(tanh);
+            impl_float!(asin);
+            impl_float!(acos);
+            impl_float!(atan);
+            impl_float!(asinh);
+            impl_float!(acosh);
+            impl_float!(atanh);
         }
-    }
-    #[inline]
-    fn as_c(&self) -> Self::Complex {
-        c32::new(*self, 0.0)
-    }
-    #[inline]
-    fn conj(&self) -> Self {
-        *self
-    }
-    #[inline]
-    fn abs_sqr(&self) -> Self::Real {
-        self * self
-    }
 
-    impl_float!(sqrt);
-    impl_float!(abs);
-    impl_float!(exp);
-    impl_float!(ln);
-    impl_float!(sin);
-    impl_float!(cos);
-    impl_float!(tan);
-    impl_float!(sinh);
-    impl_float!(cosh);
-    impl_float!(tanh);
-    impl_float!(asin);
-    impl_float!(acos);
-    impl_float!(atan);
-    impl_float!(asinh);
-    impl_float!(acosh);
-    impl_float!(atanh);
+        impl Scalar for $complex {
+            type Real = $real;
+            type Complex = $complex;
+
+            #[inline]
+            fn re(&self) -> Self::Real {
+                self.re
+            }
+            #[inline]
+            fn im(&self) -> Self::Real {
+                self.im
+            }
+            #[inline]
+            fn real<T: ToPrimitive>(re: T) -> Self::Real {
+                NumCast::from(re).unwrap()
+            }
+            #[inline]
+            fn complex<T: ToPrimitive>(re: T, im: T) -> Self::Complex {
+                Complex {
+                    re: NumCast::from(re).unwrap(),
+                    im: NumCast::from(im).unwrap(),
+                }
+            }
+            #[inline]
+            fn as_c(&self) -> Self::Complex {
+                *self
+            }
+            #[inline]
+            fn conj(&self) -> Self {
+                Complex::conj(self)
+            }
+            #[inline]
+            fn abs_sqr(&self) -> Self::Real {
+                Complex::norm_sqr(self)
+            }
+            #[inline]
+            fn abs(&self) -> Self::Real {
+                Complex::norm(self)
+            }
+
+            impl_complex!(sqrt);
+            impl_complex!(exp);
+            impl_complex!(ln);
+            impl_complex!(sin);
+            impl_complex!(cos);
+            impl_complex!(tan);
+            impl_complex!(sinh);
+            impl_complex!(cosh);
+            impl_complex!(tanh);
+            impl_complex!(asin);
+            impl_complex!(acos);
+            impl_complex!(atan);
+            impl_complex!(asinh);
+            impl_complex!(acosh);
+            impl_complex!(atanh);
+        }
+    };
 }
 
-impl Scalar for c32 {
-    type Real = f32;
-    type Complex = c32;
-
-    #[inline]
-    fn re(&self) -> Self::Real {
-        self.re
-    }
-    #[inline]
-    fn im(&self) -> Self::Real {
-        self.im
-    }
-    #[inline]
-    fn real<T: ToPrimitive>(re: T) -> Self::Real {
-        NumCast::from(re).unwrap()
-    }
-    #[inline]
-    fn complex<T: ToPrimitive>(re: T, im: T) -> Self::Complex {
-        c32 {
-            re: NumCast::from(re).unwrap(),
-            im: NumCast::from(im).unwrap(),
-        }
-    }
-    #[inline]
-    fn as_c(&self) -> Self::Complex {
-        *self
-    }
-    #[inline]
-    fn conj(&self) -> Self {
-        Complex::conj(self)
-    }
-    #[inline]
-    fn abs_sqr(&self) -> Self::Real {
-        Complex::norm_sqr(self)
-    }
-    #[inline]
-    fn abs(&self) -> Self::Real {
-        Complex::norm(self)
-    }
-
-    impl_complex!(sqrt);
-    impl_complex!(exp);
-    impl_complex!(ln);
-    impl_complex!(sin);
-    impl_complex!(cos);
-    impl_complex!(tan);
-    impl_complex!(sinh);
-    impl_complex!(cosh);
-    impl_complex!(tanh);
-    impl_complex!(asin);
-    impl_complex!(acos);
-    impl_complex!(atan);
-    impl_complex!(asinh);
-    impl_complex!(acosh);
-    impl_complex!(atanh);
-}
+impl_scalar!(f32, c32);
+impl_scalar!(f64, c64);
