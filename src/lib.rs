@@ -58,7 +58,7 @@ pub trait Scalar:
     /// Absolute value
     fn abs(&self) -> Self::Real;
     /// Sqaure of absolute value
-    fn abs_sqr(&self) -> Self::Real;
+    fn square(&self) -> Self::Real;
 
     fn sqrt(&self) -> Self;
     fn exp(&self) -> Self;
@@ -129,7 +129,7 @@ macro_rules! impl_scalar {
                 *self
             }
             #[inline]
-            fn abs_sqr(&self) -> Self::Real {
+            fn square(&self) -> Self::Real {
                 self * self
             }
 
@@ -183,7 +183,7 @@ macro_rules! impl_scalar {
                 Complex::conj(self)
             }
             #[inline]
-            fn abs_sqr(&self) -> Self::Real {
+            fn square(&self) -> Self::Real {
                 Complex::norm_sqr(self)
             }
             #[inline]
