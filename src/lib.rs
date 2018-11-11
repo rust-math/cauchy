@@ -20,7 +20,7 @@
 //! ```
 
 use num_complex::Complex;
-use num_traits::{Float, FromPrimitive, NumAssign, NumCast, NumOps, ToPrimitive};
+use num_traits::{Float, FromPrimitive, NumAssign, NumCast, NumOps, ToPrimitive, Zero};
 use serde::{Deserialize, Serialize};
 use std::ops::Neg;
 
@@ -45,6 +45,8 @@ pub trait Scalar:
     fn real<T: ToPrimitive>(re: T) -> Self::Real;
     /// Create a new complex number
     fn complex<T: ToPrimitive>(re: T, im: T) -> Self::Complex;
+
+    fn from_real(re: Self::Real) -> Self;
 
     /// Real part
     fn re(&self) -> Self::Real;
@@ -109,6 +111,12 @@ macro_rules! impl_scalar {
             fn im(&self) -> Self::Real {
                 0.0
             }
+
+            #[inline]
+            fn from_real(re: Self::Real) -> Self {
+                re
+            }
+
             #[inline]
             fn real<T: ToPrimitive>(re: T) -> Self::Real {
                 NumCast::from(re).unwrap()
@@ -163,6 +171,12 @@ macro_rules! impl_scalar {
             fn im(&self) -> Self::Real {
                 self.im
             }
+
+            #[inline]
+            fn from_real(re: Self::Real) -> Self {
+                Self::new(re, Zero::zero())
+            }
+
             #[inline]
             fn real<T: ToPrimitive>(re: T) -> Self::Real {
                 NumCast::from(re).unwrap()
