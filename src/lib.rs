@@ -48,6 +48,11 @@ pub trait Scalar:
 
     fn from_real(re: Self::Real) -> Self;
 
+    fn pow(&self, n: Self) -> Self;
+    fn powi(&self, n: i32) -> Self;
+    fn powf(&self, n: Self::Real) -> Self;
+    fn powc(&self, n: Self::Complex) -> Self::Complex;
+
     /// Real part
     fn re(&self) -> Self::Real;
     /// Imaginary part
@@ -117,6 +122,19 @@ macro_rules! impl_scalar {
                 re
             }
 
+            fn pow(&self, n: Self) -> Self {
+                self.powf(n)
+            }
+            fn powi(&self, n: i32) -> Self {
+                Float::powi(*self, n)
+            }
+            fn powf(&self, n: Self::Real) -> Self {
+                Float::powf(*self, n)
+            }
+            fn powc(&self, n: Self::Complex) -> Self::Complex {
+                self.as_c().powc(n)
+            }
+
             #[inline]
             fn real<T: ToPrimitive>(re: T) -> Self::Real {
                 NumCast::from(re).unwrap()
@@ -175,6 +193,19 @@ macro_rules! impl_scalar {
             #[inline]
             fn from_real(re: Self::Real) -> Self {
                 Self::new(re, Zero::zero())
+            }
+
+            fn pow(&self, n: Self) -> Self {
+                self.powc(n)
+            }
+            fn powi(&self, n: i32) -> Self {
+                self.powf(n as Self::Real)
+            }
+            fn powf(&self, n: Self::Real) -> Self {
+                self.powf(n)
+            }
+            fn powc(&self, n: Self::Complex) -> Self::Complex {
+                self.powc(n)
             }
 
             #[inline]
