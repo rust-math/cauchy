@@ -4,7 +4,7 @@
 //! --------
 //!
 //! ```
-//! # use num_scalar::Scalar;
+//! # use cauchy::Scalar;
 //! fn add_int<A: Scalar>(a: A) -> A {
 //!     a + A::from(1).unwrap()  // A::from is inhereted from num_traits::NumCast
 //! }

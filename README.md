@@ -1,2 +1,3 @@
-# num-scalar
-Scalar trait
+Cauchy
+========
+A crate for complex analysis
