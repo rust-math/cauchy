@@ -19,10 +19,6 @@
 //! }
 //! ```
 
-extern crate num_complex;
-extern crate num_traits;
-extern crate rand;
-
 use num_complex::Complex;
 use num_traits::{Float, FromPrimitive, NumAssign, NumCast, NumOps, ToPrimitive};
 

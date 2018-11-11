@@ -2,8 +2,8 @@
 name = "num-scalar"
 version = "0.1.0"
 authors = ["Toshiki Teramura <toshiki.teramura@gmail.com>"]
+edition = "2018"
 
 [dependencies]
 num-complex = "0.2.1"
 num-traits = "0.2"
-rand = "0.5"
