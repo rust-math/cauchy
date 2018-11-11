@@ -21,11 +21,12 @@
 
 use num_complex::Complex;
 use num_traits::{Float, FromPrimitive, NumAssign, NumCast, NumOps, ToPrimitive};
+use std::ops::Neg;
 
 pub use num_complex::Complex32 as c32;
 pub use num_complex::Complex64 as c64;
 
-pub trait Scalar: NumAssign + FromPrimitive + NumCast + std::ops::Neg + Copy {
+pub trait Scalar: NumAssign + FromPrimitive + NumCast + Neg<Output = Self> + Copy {
     type Real: Scalar<Real = Self::Real, Complex = Self::Complex> + NumOps<Self::Real, Self::Real>;
     type Complex: Scalar<Real = Self::Real, Complex = Self::Complex>
         + NumOps<Self::Real, Self::Complex>
