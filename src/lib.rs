@@ -21,12 +21,21 @@
 
 use num_complex::Complex;
 use num_traits::{Float, FromPrimitive, NumAssign, NumCast, NumOps, ToPrimitive};
+use serde::{Deserialize, Serialize};
 use std::ops::Neg;
 
 pub use num_complex::Complex32 as c32;
 pub use num_complex::Complex64 as c64;
 
-pub trait Scalar: NumAssign + FromPrimitive + NumCast + Neg<Output = Self> + Copy {
+pub trait Scalar:
+    NumAssign
+    + FromPrimitive
+    + NumCast
+    + Neg<Output = Self>
+    + Copy
+    + Serialize
+    + for<'de> Deserialize<'de>
+{
     type Real: Scalar<Real = Self::Real, Complex = Self::Complex> + NumOps<Self::Real, Self::Real>;
     type Complex: Scalar<Real = Self::Real, Complex = Self::Complex>
         + NumOps<Self::Real, Self::Complex>
