@@ -1,0 +1,15 @@
+language: rust
+cache: cargo
+
+rust:
+  - stable
+  - beta
+  - nightly
+
+os:
+  - windows
+  - linux
+  - osx
+
+script:
+  - cargo test -v
