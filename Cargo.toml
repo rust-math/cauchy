@@ -4,6 +4,13 @@ version = "0.1.0"
 authors = ["Toshiki Teramura <toshiki.teramura@gmail.com>"]
 edition = "2018"
 
+description = "Trait for real and complex numbers"
+documentation = "https://docs.rs/cauchy"
+repository = "https://github.com/termoshtt/cauchy"
+keywords = []
+categories = ["algorithms"]
+license = "MIT"
+
 [dependencies]
 num-traits = "0.2"
 serde = "1"
