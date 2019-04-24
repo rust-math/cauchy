@@ -22,11 +22,30 @@
 use num_complex::Complex;
 use num_traits::{Float, FromPrimitive, NumAssign, NumCast, NumOps, ToPrimitive, Zero};
 use serde::{Deserialize, Serialize};
+use std::fmt::Debug;
 use std::iter::{Product, Sum};
 use std::ops::Neg;
 
 pub use num_complex::Complex32 as c32;
 pub use num_complex::Complex64 as c64;
+
+pub trait RealScalar: Scalar + NumOps<Self, Self> + PartialOrd {
+    const NAN: Self;
+    const INFINITY: Self;
+    const NEG_INFINITY: Self;
+}
+
+impl RealScalar for f32 {
+    const NAN: Self = std::f32::NAN;
+    const INFINITY: Self = std::f32::INFINITY;
+    const NEG_INFINITY: Self = std::f32::NEG_INFINITY;
+}
+
+impl RealScalar for f64 {
+    const NAN: Self = std::f64::NAN;
+    const INFINITY: Self = std::f64::INFINITY;
+    const NEG_INFINITY: Self = std::f64::NEG_INFINITY;
+}
 
 pub trait Scalar:
     NumAssign
@@ -34,19 +53,17 @@ pub trait Scalar:
     + NumCast
     + Neg<Output = Self>
     + Copy
+    + Debug
+    + Sum
+    + Product
     + Serialize
     + for<'de> Deserialize<'de>
+    + 'static
 {
-    type Real: Scalar<Real = Self::Real, Complex = Self::Complex>
-        + NumOps<Self::Real, Self::Real>
-        + PartialOrd
-        + Sum
-        + Product;
+    type Real: Scalar<Real = Self::Real, Complex = Self::Complex> + RealScalar;
     type Complex: Scalar<Real = Self::Real, Complex = Self::Complex>
         + NumOps<Self::Real, Self::Complex>
-        + NumOps<Self::Complex, Self::Complex>
-        + Sum
-        + Product;
+        + NumOps<Self::Complex, Self::Complex>;
 
     /// Create a new real number
     fn real<T: ToPrimitive>(re: T) -> Self::Real;
