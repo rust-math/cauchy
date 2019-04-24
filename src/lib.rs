@@ -22,6 +22,7 @@
 use num_complex::Complex;
 use num_traits::{Float, FromPrimitive, NumAssign, NumCast, NumOps, ToPrimitive, Zero};
 use serde::{Deserialize, Serialize};
+use std::iter::{Product, Sum};
 use std::ops::Neg;
 
 pub use num_complex::Complex32 as c32;
@@ -36,10 +37,16 @@ pub trait Scalar:
     + Serialize
     + for<'de> Deserialize<'de>
 {
-    type Real: Scalar<Real = Self::Real, Complex = Self::Complex> + NumOps<Self::Real, Self::Real>;
+    type Real: Scalar<Real = Self::Real, Complex = Self::Complex>
+        + NumOps<Self::Real, Self::Real>
+        + PartialOrd
+        + Sum
+        + Product;
     type Complex: Scalar<Real = Self::Real, Complex = Self::Complex>
         + NumOps<Self::Real, Self::Complex>
-        + NumOps<Self::Complex, Self::Complex>;
+        + NumOps<Self::Complex, Self::Complex>
+        + Sum
+        + Product;
 
     /// Create a new real number
     fn real<T: ToPrimitive>(re: T) -> Self::Real;
