@@ -58,6 +58,16 @@ pub trait Scalar:
 
     fn from_real(re: Self::Real) -> Self;
 
+    fn add_real(self, re: Self::Real) -> Self;
+    fn sub_real(self, re: Self::Real) -> Self;
+    fn mul_real(self, re: Self::Real) -> Self;
+    fn div_real(self, re: Self::Real) -> Self;
+
+    fn add_complex(self, im: Self::Complex) -> Self::Complex;
+    fn sub_complex(self, im: Self::Complex) -> Self::Complex;
+    fn mul_complex(self, im: Self::Complex) -> Self::Complex;
+    fn div_complex(self, im: Self::Complex) -> Self::Complex;
+
     fn pow(&self, n: Self) -> Self;
     fn powi(&self, n: i32) -> Self;
     fn powf(&self, n: Self::Real) -> Self;
@@ -109,7 +119,25 @@ macro_rules! impl_complex {
         fn $name(&self) -> Self {
             Complex::$name(self)
         }
-    };
+    }
+}
+
+macro_rules! impl_with_real {
+    ($name:ident, $op:tt) => {
+        #[inline]
+        fn $name(self, re: Self::Real) -> Self {
+            self $op re
+        }
+    }
+}
+
+macro_rules! impl_with_complex {
+    ($name:ident, $op:tt) => {
+        #[inline]
+        fn $name(self, im: Self::Complex) -> Self::Complex {
+            self $op im
+        }
+    }
 }
 
 macro_rules! impl_scalar {
@@ -168,6 +196,15 @@ macro_rules! impl_scalar {
             fn square(&self) -> Self::Real {
                 self * self
             }
+
+            impl_with_real!(add_real, +);
+            impl_with_real!(sub_real, -);
+            impl_with_real!(mul_real, *);
+            impl_with_real!(div_real, /);
+            impl_with_complex!(add_complex, +);
+            impl_with_complex!(sub_complex, -);
+            impl_with_complex!(mul_complex, *);
+            impl_with_complex!(div_complex, /);
 
             impl_float!(sqrt);
             impl_float!(abs);
@@ -246,6 +283,15 @@ macro_rules! impl_scalar {
                 Complex::norm(self)
             }
 
+            impl_with_real!(add_real, +);
+            impl_with_real!(sub_real, -);
+            impl_with_real!(mul_real, *);
+            impl_with_real!(div_real, /);
+            impl_with_complex!(add_complex, +);
+            impl_with_complex!(sub_complex, -);
+            impl_with_complex!(mul_complex, *);
+            impl_with_complex!(div_complex, /);
+
             impl_complex!(sqrt);
             impl_complex!(exp);
             impl_complex!(ln);
@@ -262,7 +308,7 @@ macro_rules! impl_scalar {
             impl_complex!(acosh);
             impl_complex!(atanh);
         }
-    };
+    }
 }
 
 impl_scalar!(f32, c32);
