@@ -15,14 +15,14 @@
 //!     a.re() + A::real(1.0)
 //! }
 //! fn add_complex<A: Scalar>(a: A) -> A::Complex {
-//!     a.as_c() + A::complex(1.0, 1.0)
+//!     a.as_c() + A::complex(1.0, 1.0)  // upcast to complex if real
 //! }
 //! ```
 
 use num_complex::Complex;
 use num_traits::{Float, FromPrimitive, NumAssign, NumCast, NumOps, ToPrimitive, Zero};
 use serde::{Deserialize, Serialize};
-use std::fmt::Debug;
+use std::fmt::{Debug, Display};
 use std::iter::{Product, Sum};
 use std::ops::Neg;
 
@@ -35,6 +35,8 @@ pub trait Scalar:
     + NumCast
     + Neg<Output = Self>
     + Copy
+    + Clone
+    + Display
     + Debug
     + Sum
     + Product
