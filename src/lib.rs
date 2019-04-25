@@ -30,22 +30,123 @@ pub use num_complex::Complex32 as c32;
 pub use num_complex::Complex64 as c64;
 
 pub trait RealScalar: Scalar + NumOps<Self, Self> + PartialOrd {
-    const NAN: Self;
+    /// Approximate number of significant digits in base 10.
+    const DIGITS: u32;
+    /// Machine epsilon value for f32.
+    const EPSILON: Self;
+    /// Infinity (∞).
     const INFINITY: Self;
+    /// Number of significant digits in base 2.
+    const MANTISSA_DIGITS: u32;
+    /// Largest finite f32 value.
+    const MAX: Self;
+    /// Maximum possible power of 10 exponent.
+    const MAX_10_EXP: i32;
+    /// Maximum possible power of 2 exponent.
+    const MAX_EXP: i32;
+    /// Smallest finite f32 value.
+    const MIN: Self;
+    /// Minimum possible normal power of 10 exponent.
+    const MIN_10_EXP: i32;
+    /// One greater than the minimum possible normal power of 2 exponent.
+    const MIN_EXP: i32;
+    /// Smallest positive normal f32 value.
+    const MIN_POSITIVE: Self;
+    /// Not a Number (NaN).
+    const NAN: Self;
+    /// Negative infinity (-∞).
     const NEG_INFINITY: Self;
+    /// The radix or base of the internal representation of f32.
+    const RADIX: u32;
+
+    // Mathematical constants
+
+    /// Euler's number (e)
+    const E: Self;
+    /// 1/π
+    const FRAC_1_PI: Self;
+    /// 2/π
+    const FRAC_2_PI: Self;
+    /// 2/sqrt(π)
+    const FRAC_2_SQRT_PI: Self;
+    /// 1/sqrt(2)
+    const FRAC_1_SQRT_2: Self;
+    /// π/2
+    const FRAC_PI_2: Self;
+    /// π/3
+    const FRAC_PI_3: Self;
+    /// π/4
+    const FRAC_PI_4: Self;
+    /// π/6
+    const FRAC_PI_6: Self;
+    /// π/8
+    const FRAC_PI_8: Self;
+    /// ln(2)
+    const LN_2: Self;
+    /// ln(10)
+    const LN_10: Self;
+    /// log2(e)
+    const LOG2_E: Self;
+    /// log10(e)
+    const LOG10_E: Self;
+    /// Archimedes' constant (π)
+    const PI: Self;
+    /// sqrt(2)
+    const SQRT_2: Self;
 }
 
-impl RealScalar for f32 {
-    const NAN: Self = std::f32::NAN;
-    const INFINITY: Self = std::f32::INFINITY;
-    const NEG_INFINITY: Self = std::f32::NEG_INFINITY;
+macro_rules! impl_float_const {
+    ($float:ident, $const_type:ty, $constant:ident) => {
+        const $constant: $const_type = std::$float::$constant;
+    };
 }
 
-impl RealScalar for f64 {
-    const NAN: Self = std::f64::NAN;
-    const INFINITY: Self = std::f64::INFINITY;
-    const NEG_INFINITY: Self = std::f64::NEG_INFINITY;
+macro_rules! impl_float_math_const {
+    ($float:ident, $constant:ident) => {
+        const $constant: Self = std::$float::consts::$constant;
+    };
 }
+
+macro_rules! impl_real_scalar {
+    ($float:ident) => {
+        impl RealScalar for $float {
+            impl_float_const!($float, u32, DIGITS);
+            impl_float_const!($float, Self, EPSILON);
+            impl_float_const!($float, Self, INFINITY);
+            impl_float_const!($float, u32, MANTISSA_DIGITS);
+            impl_float_const!($float, Self, MAX);
+            impl_float_const!($float, i32, MAX_10_EXP);
+            impl_float_const!($float, i32, MAX_EXP);
+            impl_float_const!($float, Self, MIN);
+            impl_float_const!($float, i32, MIN_10_EXP);
+            impl_float_const!($float, i32, MIN_EXP);
+            impl_float_const!($float, Self, MIN_POSITIVE);
+            impl_float_const!($float, Self, NAN);
+            impl_float_const!($float, Self, NEG_INFINITY);
+            impl_float_const!($float, u32, RADIX);
+
+            impl_float_math_const!($float, E);
+            impl_float_math_const!($float, FRAC_1_PI);
+            impl_float_math_const!($float, FRAC_2_PI);
+            impl_float_math_const!($float, FRAC_2_SQRT_PI);
+            impl_float_math_const!($float, FRAC_1_SQRT_2);
+            impl_float_math_const!($float, FRAC_PI_2);
+            impl_float_math_const!($float, FRAC_PI_3);
+            impl_float_math_const!($float, FRAC_PI_4);
+            impl_float_math_const!($float, FRAC_PI_6);
+            impl_float_math_const!($float, FRAC_PI_8);
+            impl_float_math_const!($float, LN_2);
+            impl_float_math_const!($float, LN_10);
+            impl_float_math_const!($float, LOG2_E);
+            impl_float_math_const!($float, LOG10_E);
+            impl_float_math_const!($float, PI);
+            impl_float_math_const!($float, SQRT_2);
+        }
+    };
+}
+
+impl_real_scalar!(f32);
+impl_real_scalar!(f64);
 
 pub trait Scalar:
     NumAssign
