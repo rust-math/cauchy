@@ -21,6 +21,7 @@
 
 use num_complex::Complex;
 use num_traits::{Float, FromPrimitive, NumAssign, NumCast, NumOps, ToPrimitive, Zero};
+use rand::{distributions::Standard, prelude::*};
 use serde::{Deserialize, Serialize};
 use std::fmt::{Debug, Display};
 use std::iter::{Product, Sum};
@@ -102,6 +103,8 @@ pub trait Scalar:
     fn asinh(&self) -> Self;
     fn acosh(&self) -> Self;
     fn atanh(&self) -> Self;
+
+    fn rand(rng: &mut impl Rng) -> Self;
 }
 
 macro_rules! impl_float {
@@ -197,6 +200,10 @@ macro_rules! impl_scalar {
                 self * self
             }
 
+            fn rand(rng: &mut impl Rng) -> Self {
+                rng.sample(Standard)
+            }
+
             impl_with_real!(add_real, +);
             impl_with_real!(sub_real, -);
             impl_with_real!(mul_real, *);
@@ -281,6 +288,10 @@ macro_rules! impl_scalar {
             #[inline]
             fn abs(&self) -> Self::Real {
                 Complex::norm(self)
+            }
+
+            fn rand(rng: &mut impl Rng) -> Self {
+                rng.sample(Standard)
             }
 
             impl_with_real!(add_real, +);
