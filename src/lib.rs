@@ -23,7 +23,7 @@ use num_complex::Complex;
 use num_traits::{Float, FromPrimitive, NumAssign, NumCast, NumOps, ToPrimitive, Zero};
 use rand::{distributions::Standard, prelude::*};
 use serde::{Deserialize, Serialize};
-use std::fmt::{Debug, Display};
+use std::fmt::{Debug, Display, LowerExp, UpperExp};
 use std::iter::{Product, Sum};
 use std::ops::Neg;
 
@@ -39,6 +39,8 @@ pub trait Scalar:
     + Clone
     + Display
     + Debug
+    + LowerExp
+    + UpperExp
     + Sum
     + Product
     + Serialize
