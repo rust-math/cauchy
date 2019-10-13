@@ -14,7 +14,7 @@ license = "MIT"
 [dependencies]
 num-traits = "0.2"
 serde = "1"
-rand = "0.5"
+rand = "0.7"
 
 [dependencies.num-complex]
 version = "0.2.1"
