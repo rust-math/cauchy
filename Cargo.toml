@@ -14,8 +14,10 @@ license = "MIT"
 [dependencies]
 num-traits = "0.2"
 serde = "1"
-rand = "0.5"
+rand = "0.7"
 
 [dependencies.num-complex]
-version = "0.2.1"
+git = "http://github.com/rust-num/num-complex"
+rev = "7fb4f1c0f0f0d293c18df8d5b2b03362605b3862"
+version = "0.3.0-pre"
 features = ["serde", "rand"]

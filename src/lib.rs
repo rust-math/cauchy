@@ -1,21 +1,39 @@
-//! Scalar trait, which generalizes complex and real number.
+//! Scalar trait for generic algorithm
 //!
 //! Examples
 //! --------
 //!
+//! Basic arithmetics with real/complex
+//!
 //! ```
-//! # use cauchy::Scalar;
+//! use cauchy::Scalar;
+//!
 //! fn add_int<A: Scalar>(a: A) -> A {
 //!     a + A::from(1).unwrap()  // A::from is inhereted from num_traits::NumCast
 //! }
+//!
 //! fn add_float<A: Scalar>(a: A) -> A {
 //!     a + A::from(1.0).unwrap()
 //! }
+//!
 //! fn add_real<A: Scalar>(a: A) -> A::Real {
 //!     a.re() + A::real(1.0)
 //! }
+//!
 //! fn add_complex<A: Scalar>(a: A) -> A::Complex {
 //!     a.as_c() + A::complex(1.0, 1.0)  // upcast to complex if real
+//! }
+//! ```
+//!
+//! Random number generation
+//!
+//! ```
+//! use cauchy::Scalar;
+//! use rand::prelude::*;
+//!
+//! fn random_algorithm<A: Scalar>() {
+//!     let mut rng = StdRng::from_entropy();
+//!     let a = A::rand(&mut rng);
 //! }
 //! ```
 
@@ -106,6 +124,8 @@ pub trait Scalar:
     fn acosh(&self) -> Self;
     fn atanh(&self) -> Self;
 
+    /// Generate an random number from
+    /// [rand::distributions::Standard](https://docs.rs/rand/0.7.2/rand/distributions/struct.Standard.html)
     fn rand(rng: &mut impl Rng) -> Self;
 }
 
