@@ -89,10 +89,10 @@ pub trait Scalar:
     fn mul_complex(self, im: Self::Complex) -> Self::Complex;
     fn div_complex(self, im: Self::Complex) -> Self::Complex;
 
-    fn pow(&self, n: Self) -> Self;
-    fn powi(&self, n: i32) -> Self;
-    fn powf(&self, n: Self::Real) -> Self;
-    fn powc(&self, n: Self::Complex) -> Self::Complex;
+    fn pow(self, n: Self) -> Self;
+    fn powi(self, n: i32) -> Self;
+    fn powf(self, n: Self::Real) -> Self;
+    fn powc(self, n: Self::Complex) -> Self::Complex;
 
     /// Real part
     fn re(&self) -> Self::Real;
@@ -104,25 +104,25 @@ pub trait Scalar:
     fn conj(&self) -> Self;
 
     /// Absolute value
-    fn abs(&self) -> Self::Real;
+    fn abs(self) -> Self::Real;
     /// Sqaure of absolute value
-    fn square(&self) -> Self::Real;
+    fn square(self) -> Self::Real;
 
-    fn sqrt(&self) -> Self;
-    fn exp(&self) -> Self;
-    fn ln(&self) -> Self;
-    fn sin(&self) -> Self;
-    fn cos(&self) -> Self;
-    fn tan(&self) -> Self;
-    fn asin(&self) -> Self;
-    fn acos(&self) -> Self;
-    fn atan(&self) -> Self;
-    fn sinh(&self) -> Self;
-    fn cosh(&self) -> Self;
-    fn tanh(&self) -> Self;
-    fn asinh(&self) -> Self;
-    fn acosh(&self) -> Self;
-    fn atanh(&self) -> Self;
+    fn sqrt(self) -> Self;
+    fn exp(self) -> Self;
+    fn ln(self) -> Self;
+    fn sin(self) -> Self;
+    fn cos(self) -> Self;
+    fn tan(self) -> Self;
+    fn asin(self) -> Self;
+    fn acos(self) -> Self;
+    fn atan(self) -> Self;
+    fn sinh(self) -> Self;
+    fn cosh(self) -> Self;
+    fn tanh(self) -> Self;
+    fn asinh(self) -> Self;
+    fn acosh(self) -> Self;
+    fn atanh(self) -> Self;
 
     /// Generate an random number from
     /// [rand::distributions::Standard](https://docs.rs/rand/0.7.2/rand/distributions/struct.Standard.html)
@@ -132,8 +132,8 @@ pub trait Scalar:
 macro_rules! impl_float {
     ($name:ident) => {
         #[inline]
-        fn $name(&self) -> Self {
-            Float::$name(*self)
+        fn $name(self) -> Self {
+            Float::$name(self)
         }
     };
 }
@@ -141,7 +141,7 @@ macro_rules! impl_float {
 macro_rules! impl_complex {
     ($name:ident) => {
         #[inline]
-        fn $name(&self) -> Self {
+        fn $name(self) -> Self {
             Complex::$name(self)
         }
     };
@@ -185,16 +185,16 @@ macro_rules! impl_scalar {
                 re
             }
 
-            fn pow(&self, n: Self) -> Self {
+            fn pow(self, n: Self) -> Self {
                 self.powf(n)
             }
-            fn powi(&self, n: i32) -> Self {
-                Float::powi(*self, n)
+            fn powi(self, n: i32) -> Self {
+                Float::powi(self, n)
             }
-            fn powf(&self, n: Self::Real) -> Self {
-                Float::powf(*self, n)
+            fn powf(self, n: Self::Real) -> Self {
+                Float::powf(self, n)
             }
-            fn powc(&self, n: Self::Complex) -> Self::Complex {
+            fn powc(self, n: Self::Complex) -> Self::Complex {
                 self.as_c().powc(n)
             }
 
@@ -218,7 +218,7 @@ macro_rules! impl_scalar {
                 *self
             }
             #[inline]
-            fn square(&self) -> Self::Real {
+            fn square(self) -> Self::Real {
                 self * self
             }
 
@@ -271,16 +271,16 @@ macro_rules! impl_scalar {
                 Self::new(re, Zero::zero())
             }
 
-            fn pow(&self, n: Self) -> Self {
+            fn pow(self, n: Self) -> Self {
                 self.powc(n)
             }
-            fn powi(&self, n: i32) -> Self {
+            fn powi(self, n: i32) -> Self {
                 self.powf(n as Self::Real)
             }
-            fn powf(&self, n: Self::Real) -> Self {
+            fn powf(self, n: Self::Real) -> Self {
                 self.powf(n)
             }
-            fn powc(&self, n: Self::Complex) -> Self::Complex {
+            fn powc(self, n: Self::Complex) -> Self::Complex {
                 self.powc(n)
             }
 
@@ -304,11 +304,11 @@ macro_rules! impl_scalar {
                 Complex::conj(self)
             }
             #[inline]
-            fn square(&self) -> Self::Real {
-                Complex::norm_sqr(self)
+            fn square(self) -> Self::Real {
+                Complex::norm_sqr(&self)
             }
             #[inline]
-            fn abs(&self) -> Self::Real {
+            fn abs(self) -> Self::Real {
                 Complex::norm(self)
             }
 
