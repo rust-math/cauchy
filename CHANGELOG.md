@@ -1,6 +1,9 @@
 Unreleased
 -----------
 
+0.3.0 - 2020-06-20
+===================
+
 ### Changed
 
 - num-complex 0.3.0 https://github.com/rust-math/cauchy/pull/3
