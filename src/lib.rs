@@ -135,7 +135,7 @@ macro_rules! impl_float {
         fn $name(&self) -> Self {
             Float::$name(*self)
         }
-    }
+    };
 }
 
 macro_rules! impl_complex {
@@ -144,7 +144,7 @@ macro_rules! impl_complex {
         fn $name(&self) -> Self {
             Complex::$name(self)
         }
-    }
+    };
 }
 
 macro_rules! impl_with_real {
