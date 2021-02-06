@@ -52,6 +52,8 @@ pub trait Scalar:
     NumAssign
     + FromPrimitive
     + NumCast
+    + One
+    + Zero
     + Neg<Output = Self>
     + Copy
     + Clone
