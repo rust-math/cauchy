@@ -38,7 +38,7 @@
 //! ```
 
 use num_complex::Complex;
-use num_traits::{Float, FromPrimitive, NumAssign, NumCast, NumOps, ToPrimitive, Zero};
+use num_traits::{Float, FromPrimitive, NumAssign, NumCast, NumOps, One, ToPrimitive, Zero};
 use rand::{distributions::Standard, prelude::*};
 use serde::{Deserialize, Serialize};
 use std::fmt::{Debug, Display, LowerExp, UpperExp};
@@ -71,6 +71,14 @@ pub trait Scalar:
     type Complex: Scalar<Real = Self::Real, Complex = Self::Complex>
         + NumOps<Self::Real, Self::Complex>
         + NumOps<Self::Complex, Self::Complex>;
+
+    fn zero() -> Self {
+        Zero::zero()
+    }
+
+    fn one() -> Self {
+        One::one()
+    }
 
     /// Create a new real number
     fn real<T: ToPrimitive>(re: T) -> Self::Real;
