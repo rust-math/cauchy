@@ -1,6 +1,13 @@
 Unreleased
 -----------
 
+0.4.0 - 2021-03-06
+===================
+
+### Changed
+
+- num-complex 0.4, rand 0.8 https://github.com/rust-math/cauchy/pull/8
+
 0.3.0 - 2020-06-20
 ===================
 
